@@ -9,5 +9,8 @@ Rustで書かれたシンプルなファイル暗号化・復号ツール。
 ## Usage
 特定のテキストファイルを暗号化します。本ツールは特定の形式に限定せず、あらゆるバイナリファイルを対象にできます。
 
-例：text.txtを入力して、暗号化したファイルはtext.txt.xxx(未定)あるいはtext.xxx(未定)。
-   text.txt.xxx(未定)あるいはtext.xxx(未定)を入力して、元のtext.txtを出力する。
+例：
+
+text.txtを入力して、暗号化したファイルはtext.txt.xxx(未定)あるいはtext.xxx(未定)。
+   
+text.txt.xxx(未定)あるいはtext.xxx(未定)を入力して、元のtext.txtを出力する。
