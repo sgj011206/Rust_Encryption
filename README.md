@@ -27,6 +27,15 @@ rust_encryption　keygen
 
 rust_encryption　version
 
+## Security Warning
+
+鍵は必ず安全に保管してください。鍵を紛失した場合、データは復元できません。
+
+
+## Development environment
+
+Mac OS,Visual Studio Code
+
 ## license
 
 このプロジェクトはMITライセンスで公開されています。
