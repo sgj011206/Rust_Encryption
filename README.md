@@ -19,3 +19,6 @@ rust_encryption encrypt file_path
 
 rust_encryption decrypt file_path
 
+## ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。
