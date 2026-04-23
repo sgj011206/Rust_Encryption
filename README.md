@@ -15,7 +15,7 @@ rust_encryption --help
 
 rust_encryption encrypt file_path
 
-ファイルの復号：
+ファイルの復号化：
 
 rust_encryption decrypt file_path
 
