@@ -1,3 +1,4 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 # Rust_Encryption
 Rustで書かれたシンプルなファイル暗号化・復号ツール。
 
