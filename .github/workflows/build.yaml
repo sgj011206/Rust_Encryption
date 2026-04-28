@@ -1,1 +1,18 @@
-
+name: build
+on:
+  push:
+   branches:
+    _ "**"
+jobs:
+ build:
+  runs-on: ${{ matrix.os }}
+   strategy:
+    matrix:
+     os:
+      - ubuntu-latest
+      - macOS-latest
+      - windows-latest
+  steps:
+   - name: setup rust
+    run: |
+     rustup update stable
