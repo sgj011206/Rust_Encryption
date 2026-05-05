@@ -6,7 +6,7 @@ on:
 jobs:
  build:
   runs-on: ${{ matrix.os }}
-   strategy:
+  strategy:
     matrix:
      os:
        - ubuntu-latest
