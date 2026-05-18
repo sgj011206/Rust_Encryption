@@ -77,3 +77,50 @@ pub fn handle_decrypt(file_path: &str) -> Result<()> {
     println!("Output file: {}", output_path);
     Ok(())
 }
+
+
+
+// 在 src/file_io.rs 的最底部添加：
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    #[test]
+    fn test_keygen_and_file_flow() {
+        // 1. 测试密钥生成
+        let keygen_res = handle_keygen();
+        assert!(keygen_res.is_ok());
+        assert!(fs::metadata(DEFAULT_KEY_FILE).is_ok());
+
+        // 2. 创建一个临时测试文件
+        let test_file = "test_input.txt";
+        let test_content = "This is a file I want to protect.";
+        fs::write(test_file, test_content).unwrap();
+
+        // 3. 测试加密流程
+        let enc_res = handle_encrypt(test_file);
+        assert!(enc_res.is_ok());
+        
+        let enc_file = format!("{}.{}", test_file, ENC_EXTENSION);
+        assert!(fs::metadata(&enc_file).is_ok());
+
+        // 删除原文件模拟解密环境
+        fs::remove_file(test_file).unwrap();
+
+        // 4. 测试解密流程
+        let dec_res = handle_decrypt(&enc_file);
+        assert!(dec_res.is_ok());
+        assert!(fs::metadata(test_file).is_ok());
+
+        // 验证解密后的内容是否一致
+        let recovered_content = fs::read_to_string(test_file).unwrap();
+        assert_eq!(recovered_content, test_content);
+
+        // 清理测试产生的垃圾文件
+        let _ = fs::remove_file(DEFAULT_KEY_FILE);
+        let _ = fs::remove_file(test_file);
+        let _ = fs::remove_file(enc_file);
+    }
+}
