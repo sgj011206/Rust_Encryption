@@ -11,6 +11,6 @@
 
 例：
 
-text.txtを入力して、暗号化したファイルはtext.txt.xxx(未定)あるいはtext.xxx(未定)。
+text.txtを入力して、暗号化したファイルはtext.txt.enc。
    
-text.txt.xxx(未定)あるいはtext.xxx(未定)を入力して、元のtext.txtを出力する。
+text.txt.encを入力して、元のtext.txtを出力する。
