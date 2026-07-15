@@ -34,3 +34,44 @@ pub enum Commands {
     /// Shows all commands and their descriptions
     Help,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_keygen_command() {
+        let cli = Cli::try_parse_from(["rust_encryption", "keygen"]).unwrap();
+        assert!(matches!(cli.command, Commands::Keygen));
+    }
+
+    #[test]
+    fn test_parse_encrypt_command() {
+        let cli = Cli::try_parse_from(["rust_encryption", "encrypt", "sample.txt"]).unwrap();
+        assert!(matches!(
+            cli.command,
+            Commands::Encrypt { file_path } if file_path == "sample.txt"
+        ));
+    }
+
+    #[test]
+    fn test_parse_decrypt_command() {
+        let cli = Cli::try_parse_from(["rust_encryption", "decrypt", "sample.txt.enc"]).unwrap();
+        assert!(matches!(
+            cli.command,
+            Commands::Decrypt { file_path } if file_path == "sample.txt.enc"
+        ));
+    }
+
+    #[test]
+    fn test_parse_help_command() {
+        let cli = Cli::try_parse_from(["rust_encryption", "help"]).unwrap();
+        assert!(matches!(cli.command, Commands::Help));
+    }
+
+    #[test]
+    fn test_parse_version_command() {
+        let cli = Cli::try_parse_from(["rust_encryption", "version"]).unwrap();
+        assert!(matches!(cli.command, Commands::Version));
+    }
+}
