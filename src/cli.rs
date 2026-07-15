@@ -7,6 +7,7 @@ use clap::{Parser, Subcommand};
 #[command(author = "sgj011206")]
 #[command(version = "0.1.0")]
 #[command(about = "A fast and secure file encryption CLI tool", long_about = None)]
+#[command(disable_help_subcommand = true)]
 pub struct Cli {
     // サブコマンドを受け付けるためのフィールド
     #[command(subcommand)]
@@ -28,4 +29,8 @@ pub enum Commands {
     },
     /// Generates a new random encryption key
     Keygen,
+    /// Shows the current application version
+    Version,
+    /// Shows all commands and their descriptions
+    Help,
 }
