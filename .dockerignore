@@ -1,0 +1,14 @@
+.git
+.github
+docs
+target
+dist
+coverage.lcov
+
+rust_encryption.key
+*.enc
+*.dec
+
+.DS_Store
+.idea
+.vscode

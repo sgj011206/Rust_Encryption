@@ -5,7 +5,7 @@ use clap::{Parser, Subcommand};
 #[derive(Parser)]
 #[command(name = "rust_encryption")]
 #[command(author = "sgj011206")]
-#[command(version = "0.1.0")]
+#[command(version)]
 #[command(about = "A fast and secure file encryption CLI tool", long_about = None)]
 #[command(disable_help_subcommand = true)]
 pub struct Cli {
