@@ -1,8 +1,10 @@
+[![build](https://github.com/sgj011206/Rust_Encryption/actions/workflows/build.yaml/badge.svg)](https://github.com/sgj011206/Rust_Encryption/actions/workflows/build.yaml)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 [![Coverage Status](https://coveralls.io/repos/github/sgj011206/Rust_Encryption/badge.svg?branch=main)](https://coveralls.io/github/sgj011206/Rust_Encryption)
 
-![build](https://github.com/sgj011206/Rust_Encryption/actions/workflows/build.yml/badge.svg)
+
 # Rust_Encryption
 Rustで書かれたシンプルなファイル暗号化・復号ツール。
 
