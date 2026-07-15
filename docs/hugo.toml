@@ -1,0 +1,14 @@
+baseURL = 'https://sgj011206.github.io/Rust_Encryption/'
+locale = 'ja-jp'
+title = 'Rust Encryption'
+theme = 'ananke'
+enableRobotsTXT = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[params]
+  author = 'sgj011206'
+  description = 'Rustで書かれたシンプルなファイル暗号化・復号ツール'
+  show_reading_time = true

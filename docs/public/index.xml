@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rust Encryption</title><link>https://sgj011206.github.io/Rust_Encryption/</link><description>Recent content on Rust Encryption</description><generator>Hugo</generator><language>ja-jp</language><atom:link href="https://sgj011206.github.io/Rust_Encryption/index.xml" rel="self" type="application/rss+xml"/><item><title>Specification</title><link>https://sgj011206.github.io/Rust_Encryption/spec/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://sgj011206.github.io/Rust_Encryption/spec/</guid><description>&lt;h2 id="goal"&gt;Goal&lt;/h2&gt;
+&lt;p&gt;個人の機密ファイルを暗号化するための、高速で安全なCLIツールを開発する。&lt;/p&gt;
+&lt;h2 id="input-and-output"&gt;Input and Output&lt;/h2&gt;
+&lt;p&gt;特定のテキストファイルを暗号化します。本ツールは特定の形式に限定せず、あらゆるバイナリファイルを対象にできます。&lt;/p&gt;
+&lt;p&gt;例：&lt;/p&gt;
+&lt;p&gt;text.txtを入力して、暗号化したファイルはtext.txt.enc。&lt;/p&gt;
+&lt;p&gt;text.txt.encを入力して、元のtext.txtを出力する。&lt;/p&gt;</description></item></channel></rss>
