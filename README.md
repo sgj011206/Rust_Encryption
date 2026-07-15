@@ -4,6 +4,8 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/sgj011206/Rust_Encryption/badge.svg?branch=main)](https://coveralls.io/github/sgj011206/Rust_Encryption)
 
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-document-blue?logo=github)](https://sgj011206.github.io/Rust_Encryption/)
+
 
 # Rust_Encryption
 Rustで書かれたシンプルなファイル暗号化・復号ツール。
