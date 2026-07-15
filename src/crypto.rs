@@ -60,7 +60,6 @@ pub fn decrypt_data(key_bytes: &[u8], encrypted_data: &[u8]) -> Result<Vec<u8>> 
     Ok(plaintext)
 }
 
-// 在 src/crypto.rs 的最底部添加：
 
 #[cfg(test)]
 mod tests {
@@ -77,11 +76,11 @@ mod tests {
         let key = generate_random_key();
         let plaintext = b"Hello, Rust Encryption!";
 
-        // 加密
+        // 暗号化
         let encrypted = encrypt_data(&key, plaintext).unwrap();
         assert!(encrypted.len() > NONCE_SIZE);
 
-        // 解密
+        // 復号
         let decrypted = decrypt_data(&key, &encrypted).unwrap();
         assert_eq!(decrypted, plaintext);
     }
@@ -89,22 +88,23 @@ mod tests {
     #[test]
     fn test_decrypt_with_wrong_key() {
         let key1 = generate_random_key();
-        let key2 = generate_random_key(); // 另一个不同的密钥
+        let key2 = generate_random_key(); // 別の異なるキー
         let plaintext = b"Secret Message";
 
         let encrypted = encrypt_data(&key1, plaintext).unwrap();
         let decrypt_result = decrypt_data(&key2, &encrypted);
 
-        // 预期应该失败
+        // 失敗することを想定
         assert!(decrypt_result.is_err());
     }
 
     #[test]
     fn test_decrypt_too_small_data() {
         let key = generate_random_key();
-        let short_data = vec![0u8; 5]; // 长度小于 NONCE_SIZE (12)
+        let short_data = vec![0u8; 5]; // 長さが NONCE_SIZE (12) 未満
 
         let decrypt_result = decrypt_data(&key, &short_data);
         assert!(decrypt_result.is_err());
     }
 }
+
