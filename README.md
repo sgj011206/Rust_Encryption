@@ -12,23 +12,23 @@ Rustで書かれたシンプルなファイル暗号化・復号ツール。
 ## Usage
 以下のコマンドを実行してヘルプを表示します：
 
-rust_encryption help
+help
 
 ファイルの暗号化：
 
-rust_encryption encrypt file_path
+encrypt file_path
 
 ファイルの復号化：
 
-rust_encryption decrypt file_path
+decrypt file_path
 
 新しいランダムキーまたはキーファイルを生成します：
 
-rust_encryption　keygen
+keygen
 
 バージョン情報を表示します：
 
-rust_encryption　version
+version
 
 ## Security Warning
 
