@@ -40,7 +40,7 @@ const commandData = {
   },
   keygen: {
     command: 'cargo run -- keygen',
-    output: '新しいランダム鍵または鍵ファイルを生成します。<br><br><span>Important:</span>&nbsp;鍵を安全に保管し、必ずバックアップを作成してください。'
+    output: '新しい鍵ファイルを生成します。<br><br><span>Important:</span>&nbsp;鍵を安全に保管し、必ずバックアップを作成してください。'
   },
   version: {
     command: 'cargo run -- version',
