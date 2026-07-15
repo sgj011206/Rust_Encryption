@@ -1,37 +1,85 @@
-name: update version
+name: Update version
+
 on:
   push:
     branches:
-      - releases/v*
+      - "releases/v*"
+
+# 工作流需要向 releases/v... 分支提交并推送版本更新。
+permissions:
+  contents: write
+
 jobs:
   update-version:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Git Tag Name
+      # ------------------------------------------------------------
+      # 1. 从 releases/v0.1.0 这样的分支名中提取版本号 0.1.0
+      # ------------------------------------------------------------
+      - name: Read release version
         id: vars
+        shell: bash
         run: |
-          echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
-          echo "tag=${GITHUB_REF##**/v}" >> $GITHUB_OUTPUT
-      - name: Checkout
+          branch="${GITHUB_REF_NAME}"
+          version="${branch#releases/v}"
+
+          if [[ -z "$version" || "$version" == "$branch" ]]; then
+            echo "::error::Cannot extract version from branch: $branch"
+            exit 1
+          fi
+
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+          echo "Release branch: $branch"
+          echo "Release version: $version"
+
+      # ------------------------------------------------------------
+      # 2. 检出当前发布分支
+      #
+      # checkout@v6 会自动保存 GITHUB_TOKEN 凭据。
+      # 后续可以直接执行 git push，不需要手工提取 extraheader。
+      # ------------------------------------------------------------
+      - name: Checkout release branch
         uses: actions/checkout@v6
         with:
           ref: ${{ steps.vars.outputs.branch }}
           fetch-depth: 0
-      - name: Initialize
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "action@github.com"
-          auth_header="$(git config --local --get http.https://github.com/.extraheader)"
-          git submodule sync --recursive
-          git -c "http.extraheader=$auth_header" -c protocol.version=2 submodule update --init --force --recursive --depth=1
+          persist-credentials: true
 
-      - name: update version
-        id: update_version
+      # ------------------------------------------------------------
+      # 3. 设置 Git 提交者信息
+      # ------------------------------------------------------------
+      - name: Configure Git
         run: |
-          sh .github/scripts/update_version.sh ${{ steps.vars.outputs.tag }}
-          git commit -a -m "update version to ${{ steps.vars.outputs.tag }}" || true
-      - name: Push branch
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ steps.vars.outputs.branch }}
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # ------------------------------------------------------------
+      # 4. 修改 Cargo.toml 版本，并同步 Cargo.lock
+      # ------------------------------------------------------------
+      - name: Update Cargo version
+        shell: bash
+        run: |
+          sh .github/scripts/update_version.sh \
+            "${{ steps.vars.outputs.version }}"
+
+          # 修改 Cargo.toml 的 package.version 后，
+          # Cargo.lock 中根包版本也需要同步。
+          cargo check
+
+          git add Cargo.toml Cargo.lock
+
+          if git diff --cached --quiet; then
+            echo "Version is already ${{ steps.vars.outputs.version }}."
+            echo "No commit is required."
+            exit 0
+          fi
+
+          git commit \
+            -m "Update version to ${{ steps.vars.outputs.version }}"
+
+          git push origin \
+            "HEAD:${{ steps.vars.outputs.branch }}"
