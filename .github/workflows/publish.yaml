@@ -31,7 +31,8 @@ jobs:
           # アプリケーション名は、リポジトリ名からオーナー名を取り除いたもの。
           # $GITHUB_OUTPUT に出力することで、後続のジョブから参照できるようになる。
           echo "tag=${GITHUB_HEAD_REF##*/v}" >> $GITHUB_OUTPUT
-          echo "appname=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+          #echo "appname=${GITHUB_REPOSITORY#*/}" >> $GITHUB_OUTPUT
+          echo "appname=rust_encryption" >> "$GITHUB_OUTPUT"
 
       - name: Set git identity
         run: |
@@ -97,22 +98,49 @@ jobs:
           ref: main
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
 
-      - name: build
+      - name: Build binary and completions
         run: |
           rustup update stable
           rustup target add ${{ matrix.target }}
           cargo install cargo-zigbuild
-          # zigbuild を使って、クロスコンパイルする。
-          cargo zigbuild --release --target ${{ matrix.target }}
 
-      - name: Create distribution files.
+          cargo zigbuild \
+            --release \
+            --target ${{ matrix.target }}
+
+          rm -rf completions
+          cargo run --release -- --completions
+
+      - name: Create distribution files
         run: |
-          # 配布用のファイルを作成する。
-          ASSET_NAME=${{ needs.setup.outputs.appname }}-${{ needs.setup.outputs.tag}}_${{ matrix.architecture }}_${{ matrix.os_name }}
-          mkdir -p dist/$ASSET_NAME
-          cp target/${{ matrix.target }}/release/${{ needs.setup.outputs.appname }}${{ matrix.ext }} dist/$ASSET_NAME/
-          cp README.md LICENSE dist/$ASSET_NAME/
-          tar cvfz dist/${ASSET_NAME}.tar.gz -C dist $ASSET_NAME
+          APP_NAME="${{ needs.setup.outputs.appname }}"
+          VERSION="${{ needs.setup.outputs.tag }}"
+          ARCH="${{ matrix.architecture }}"
+          OS_NAME="${{ matrix.os_name }}"
+
+          ASSET_NAME="${APP_NAME}-${VERSION}_${ARCH}_${OS_NAME}"
+          PACKAGE_DIR="dist/${ASSET_NAME}"
+
+          mkdir -p "${PACKAGE_DIR}"
+
+          cp \
+            "target/${{ matrix.target }}/release/${APP_NAME}${{ matrix.ext }}" \
+            "${PACKAGE_DIR}/"
+
+           cp README.md LICENSE "${PACKAGE_DIR}/"
+          cp -R completions "${PACKAGE_DIR}/"
+
+          tar \
+            -czf "dist/${ASSET_NAME}.tar.gz" \
+            -C "${PACKAGE_DIR}" \
+            .
+
+          (
+            cd dist
+            shasum -a 256 \
+              "${ASSET_NAME}.tar.gz" \
+              > "${ASSET_NAME}.tar.gz.sha256"
+          )
 
       - name: Upload assets
         env:
@@ -120,7 +148,11 @@ jobs:
         run: |
           # gh コマンドを使って、リリースにアセットをアップロードする。
           ASSET_NAME=${{ needs.setup.outputs.appname }}-${{ needs.setup.outputs.tag}}_${{ matrix.architecture }}_${{ matrix.os_name }}
-          gh release upload v${{ needs.setup.outputs.tag }} dist/${ASSET_NAME}.tar.gz
+          #gh release upload v${{ needs.setup.outputs.tag }} dist/${ASSET_NAME}.tar.gz
+          gh release upload \
+            "v${{ needs.setup.outputs.tag }}" \
+            "dist/${ASSET_NAME}.tar.gz" \
+            "dist/${ASSET_NAME}.tar.gz.sha256"
   container_image:
     runs-on: ubuntu-latest
 
