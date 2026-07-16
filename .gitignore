@@ -156,3 +156,5 @@ rust_encryption.key
 *.dec
 dist/
 coverage.lcov
+
+/completions/
